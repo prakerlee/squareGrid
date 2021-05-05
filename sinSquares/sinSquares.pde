@@ -46,8 +46,13 @@ class Squares {
   
   float distanceFromCenter;
 
-  Squares(color c1, float xPos, float yPos, float xSize, float ySize, float index){
-
+  Squares(color temp_c1, float temp_xPos, float temp_yPos, float temp_xSize, float temp_ySize, float temp_index){
+      c1 = temp_c1;
+      xPos = temp_xPos;
+      yPos = temp_yPos;
+      xSize = temp_xSize;
+      ySize = temp_ySize;
+      index = temp_index;
   }
   
   void display(){
