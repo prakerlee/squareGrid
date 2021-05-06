@@ -1,6 +1,7 @@
-Squares[] squares = new Squares[441];
+Squares[] squares;
 color c1 = color(86, 176, 215);
 color c2 = color(5, 69, 97);
+color color1;
 float squareSize = 16;
 float padding = 29;
 float margin = 16;
@@ -8,11 +9,14 @@ float rippleSpeed = 0.013;
 PVector centerPos;
 PVector squarePosition;
 color lerpedColor;
+int squareArrayLength;
 
 
 void setup(){
   translate(width/2, height/2);
   size (600, 600);
+  squareArrayLength = 441;
+  squares = new Squares[squareArrayLength];
   centerPos = new PVector(width/2, height/2);
   resetSquares();
   
@@ -46,12 +50,18 @@ class Squares {
   
   float distanceFromCenter;
 
-  Squares(color c1, float xPos, float yPos, float xSize, float ySize, float index){
-
+  Squares(color tempColor1, float tempXpos, float tempYpos, float tempXsize, float tempYsize, float tempIndex){
+    color1 = tempColor1;
+    xPos = tempXpos;
+    yPos = tempYpos;
+    xSize = tempXsize;
+    ySize = tempYsize;
+    index = tempIndex;
+    
   }
   
   void display(){
-    fill(lerpedColor);
+    fill(color1);
     imageMode(CENTER);
     rectMode(CENTER);
     rect(xPos, yPos, xSize, ySize);
@@ -64,6 +74,7 @@ class Squares {
     
     //color stuff
     lerpedColor = lerpColor(c1, c2, 0.5*sin(millis() * freq * distanceFromCenter * rippleSpeed) + .5);
+    color1 = lerpedColor;
     
     //Oscillate
     xSize = sin(millis() * freq * distanceFromCenter * rippleSpeed) * amp + squareSize;
@@ -77,10 +88,12 @@ void resetSquares() {
   //squares = [];
 
   //then, calculate how many squares to create:
-  //int numberX = ceil((width-margin) / padding);
-  //int numberY = ceil((height-margin) / padding);
-  int numberX = 29;
-  int numberY = 29;
+  int numberX = ceil((width-margin) / padding);
+  int numberY = ceil((height-margin) / padding);
+  squareArrayLength = numberX * numberY;
+
+  //int numberX = 29;
+  //int numberY = 29;
 
   // re-intialize the squares, and lay them out in a grid
   for (int j = 0; j < numberY; j++) {
@@ -90,12 +103,11 @@ void resetSquares() {
       float yPos = (j) * padding;
       xPos = map(xPos, 0, padding*(numberX-1), margin, width-margin);
       yPos = map(yPos, 0, padding*(numberY-1), margin, height-margin);
-      println(xPos);
+      //println(xPos);
       
-      if(index < 441){
-        squares[index] = new Squares(c1, xPos, yPos, squareSize, squareSize, index);
-        //println(xPos);
-      }
+      squares[index] = new Squares(c1, xPos, yPos, squareSize, squareSize, index);
+      println(index);
+      
     }
   }
 
